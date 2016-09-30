@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+
+ <on-start> <evaluate expression="shipHandler.initFlow()" result="flowScope.shipping" />  </on-start>
+ <!--  if not specified the first view state is the starting state 
+  --> 
+  
+  
+<view-state id="start" view="shipping" model="flowScope.shipping">
+ <transition on="submit" to="summa" /> 
+ </view-state>
+ 
+ 
+<view-state id="summa" view="confirmShipping" model="flowScope.shipping">
+ <transition on="edit" to="start" /> 
+ <transition on="submit" to="save" /> 
+  </view-state> 
+  
+  
+ <action-state id="save">
+<evaluate expression="shipHandler.saveaddress(shipping)"></evaluate> 
+<evaluate expression="shipHandler.savecart(shipping)"></evaluate> 
+  <transition to="payorder"/> 
+  </action-state>
+  
+  
+<!-- <view-state id="payorder" view="payorder">
+  <transition on="submit" to="index" /> 
+  </view-state> -->
+  
+  <end-state id="payorder" view="index" /> 
+  </flow>
+	
+	
